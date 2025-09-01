@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la commande{% endblock %}
+
+{% block body %}
+<div class="max-w-3xl mx-auto p-6">
+
+    <div class="bg-white shadow rounded-lg p-6">
+        <h1 class="text-2xl font-bold mb-6">Commande #{{ order.id }}</h1>
+
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Client :</span> {{ order.firstName }} {{ order.lastName }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Email :</span> {{ order.email }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Téléphone :</span> {{ order.phone }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Date :</span> {{ order.createdAt|date('d/m/Y H:i') }}</p>
+        <p class="text-gray-700 mb-4"><span class="font-semibold">Statut :</span> 
+            {% if order.isCompleted %}
+                <span class="text-green-600 font-semibold">Terminée</span>
+            {% else %}
+                <span class="text-yellow-600 font-semibold">En cours</span>
+            {% endif %}
+        </p>
+
+        <div class="flex gap-4">
+            <a href="{{ path('app_order_index') }}" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">
+                Retour à la liste
+            </a>
+            <a href="{{ path('app_order_edit', {'id': order.id}) }}" class="bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500 text-white">
+                Modifier
+            </a>
+            <form method="post" action="{{ path('app_order_delete', {'id': order.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ order.id) }}">
+                <button class="bg-red-500 px-4 py-2 rounded hover:bg-red-600 text-white">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+

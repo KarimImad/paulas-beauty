@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avis{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto p-6">
+
+    <h1 class="text-2xl font-bold mb-6">Tous les avis</h1>
+
+    <a href="{{ path('app_review_new') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-4 inline-block">
+        Ajouter un avis
+    </a>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% for review in reviews %}
+            <div class="bg-white p-4 rounded shadow hover:shadow-lg transition">
+                <p class="text-gray-700 mb-2">“{{ review.description }}”</p>
+                <p class="font-semibold text-gray-900 text-sm">- {{ review.name }}, {{ review.service.name }}</p>
+                {# <p class="text-gray-500 text-xs">Créé le {{ review.createdAt|date('d/m/Y H:i') }}</p> #}
+                <div class="flex gap-2 mt-2">
+                    <a href="{{ path('app_review_show', {'id': review.id}) }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Voir</a>
+                    <a href="{{ path('app_review_edit', {'id': review.id}) }}" class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">Modifier</a>
+                    {{ include('review/_delete_form.html.twig', { 'button_class': 'bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600' }) }}
+                </div>
+            </div>
+        {% else %}
+            <p class="text-gray-500">Aucun avis pour le moment.</p>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
