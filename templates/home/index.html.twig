@@ -10,14 +10,14 @@
     </header>
 
     <!-- Hero -->
-    <section class="text-center py-16 px-4">
+    <section class="text-center py-16 px-4" >
         <h1 class="text-4xl md:text-5xl font-bold mb-4">Onglerie à Gambetta – Réservation en ligne</h1>
         <p class="text-gray-600 text-lg mb-8">Manucure, gel, semi-permanent et nail art. Choisissez votre prestation et un créneau.</p>
     </section>
 
     <!-- Services / Catégories -->
     <section id="services" class="max-w-7xl mx-auto px-4 py-16">
-        <h2 class="text-3xl font-bold mb-8 text-center">Nos Prestations</h2>
+        <h2 class="text-3xl font-bold mb-8 text-center">Mes Prestations</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for category in categories %}
                 <div class="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition relative">
@@ -68,7 +68,7 @@
         </div>
     </section>
 
-    <!-- Contact / Réservation -->
+    {# <!-- Contact / Réservation -->
     <section id="reservation" class="max-w-2xl mx-auto px-4 py-16">
         <h2 class="text-3xl font-bold mb-8 text-center">Réservez votre créneau</h2>
         <form method="post" action="" class="bg-white shadow p-8 rounded flex flex-col gap-4">
@@ -84,7 +84,7 @@
             <button type="submit" class="bg-blue-500 text-white font-semibold px-4 py-3 rounded hover:bg-blue-600">Réserver</button>
         </form>
     </section>
-</div>
+</div> #}
 
 <script>
 function toggleServices(categoryId) {
