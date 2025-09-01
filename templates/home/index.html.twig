@@ -19,23 +19,24 @@
     <section id="services" class="max-w-7xl mx-auto px-4 py-16">
         <h2 class="text-3xl font-bold mb-8 text-center">Mes Prestations</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for category in categories %}
+            {% for service in services %}
                 <div class="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition relative">
                     {# <div class="h-48 bg-gradient-to-br from-blue-100 to-blue-50 flex items-end p-4">
                         <!-- Image / couleur de fond -->
                     </div> #}
                     <div class="p-4 flex flex-col gap-2">
-                        <h3 class="font-bold text-lg mx-auto">{{ category.name }}</h3>
-                        <p class="text-gray-600 text-sm mx-auto">{{ category.description }}</p>
+                        <h3 class="font-bold text-lg mx-auto">{{ service.name }}</h3>
+                        <p class="text-gray-600 text-sm mx-auto">{{ service.description }}</p>
 
                         <!-- Bouton Choisir -->
                         <button type="button"
                                 class="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600 mx-auto mt-2"
-                                onclick="toggleServices({{ category.id }})">
-                            Choisir
+                                onclick="toggleServices({{ service.id }})">
+                                <a href="{{ path('app_booking_new', {'id': service.id}) }}">Choisir</a>
+                            
                         </button>
 
-                        <!-- Liste déroulante des services (initialement cachée) -->
+                        {# <!-- Liste déroulante des services (initialement cachée) -->
                         {% if category.services|length > 0  %}
                         <form method="post" action="#reservation" class="mt-2 hidden" id="services-{{ category.id }}">
                             <select name="service"
@@ -48,7 +49,7 @@
                                 Réserver ce service
                             </button>
                         </form>
-                        {% endif %}
+                        {% endif %} #}
                     </div>
                 </div>
             {% endfor %}

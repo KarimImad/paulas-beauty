@@ -94,3 +94,9 @@ Actions :
 - TailwindCSS pour le style et les layouts
 - Les pages clientes utilisent la notation pointée pour accéder aux données
 - Les CRUD admin gèrent les entités et sont sécurisés via ROLE_ADMIN
+
+
+Une entité Days
+Une entité horaires
+Ajouter des jours, et des horaires à afficher
+si un horaire est affiché dans la commande et validé alors il disparait du twig et il faut le reactiver
