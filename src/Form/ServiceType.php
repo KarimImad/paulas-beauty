@@ -17,11 +17,9 @@ class ServiceType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('price')
-            ->add('pictures')
-            ->add('category_id')
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
         ;
     }
