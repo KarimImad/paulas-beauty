@@ -47,6 +47,8 @@ final class BookingController extends AbstractController
     {
         // On récupère l'id du service qui avait été stocké dans la session
         $serviceId = $session->get('selected_service');
+        $schedules = $service->getSchedules(); // si relation Service->Schedules existe
+
 
         // Si aucun service n’a été choisi avant, on renvoie une erreur
         if (!$serviceId) {

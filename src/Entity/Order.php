@@ -43,6 +43,10 @@ class Order
     #[ORM\OneToMany(targetEntity: OrderService::class, mappedBy: 'customerOrder')]
     private Collection $orderServices;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Schedule $schedule = null;
+
     public function __construct()
     {
         $this->orderServices = new ArrayCollection();
@@ -166,4 +170,18 @@ class Order
 
         return $this;
     }
+
+    public function getSchedule(): ?Schedule
+    {
+        return $this->schedule;
+    }
+
+    public function setSchedule(?Schedule $schedule): static
+    {
+        $this->schedule = $schedule;
+
+        return $this;
+    }
 }
+
+

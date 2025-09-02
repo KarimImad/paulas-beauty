@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schedule{% endblock %}
+
+{% block body %}
+    <h1>Schedule</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ schedule.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ schedule.date ? schedule.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>StartHour</th>
+                <td>{{ schedule.startHour ? schedule.startHour|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndHour</th>
+                <td>{{ schedule.endHour ? schedule.endHour|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsAvailable</th>
+                <td>{{ schedule.isAvailable ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_schedule_index') }}">back to list</a>
+
+    <a href="{{ path('app_schedule_edit', {'id': schedule.id}) }}">edit</a>
+
+    {{ include('schedule/_delete_form.html.twig') }}
+{% endblock %}
