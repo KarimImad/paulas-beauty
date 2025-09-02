@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Service;
 use App\Repository\ServiceRepository;
+use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,28 +19,49 @@ final class BookingController extends AbstractController
     }
 
     #[Route('/booking', name: 'app_booking')]
-    public function index(): Response
+    public function index(SessionInterface $session, Service $service): Response
     {
+
+
         return $this->render('booking/index.html.twig', [
             'controller_name' => 'BookingController',
         ]);
     }
 
-    #[Route('/booking/add/{id}/', name: 'app_booking_new', methods:['GET'])]
-    //Définit une route pour ajouter un produit au panier
-    public function addServiceToBooking(int $id, SessionInterface $session, Request $request, Service $service): Response //int veut dire qu'on attend obligatoirement que l'id soit un entier
-    //Méthode pour ajouter un produit au panier, prend l'ID du produit et la session en paramètres
+    #[Route('/booking/select/{id}', name: 'app_select_booking', methods:['GET'])]
+    public function selectBooking(Service $service, SessionInterface $session): Response
     {
-        $booking= $session->get('service',[]);
+        // On stocke l'id du service choisi dans la session
+        // Exemple : si l'utilisateur clique sur "Pose gel" avec l'id = 3,
+        // on va enregistrer dans la session : selected_service = 3
+        $session->set('selected_service', $service->getId());
 
-        // Récupère le panier actuel de la session, ou un tableau vide si il n'existe pas
-         
-
-
-      
-        $session->set('booking',$booking);
-        //Met à jour le panier dans la session 
-        return $this->redirectToRoute('app_booking');
-        // Redirige vers la page du panier
+        // Ensuite, on redirige vers la route "app_choose_booking"
+        // => ça va afficher la page pour choisir une date/heure
+        return $this->redirectToRoute('app_chosen_booking');
     }
+
+
+    #[Route('/booking/chosen', name: 'app_chosen_booking', methods:['GET'])]
+    public function chooseBooking(SessionInterface $session, ServiceRepository $serviceRepo): Response
+    {
+        // On récupère l'id du service qui avait été stocké dans la session
+        $serviceId = $session->get('selected_service');
+
+        // Si aucun service n’a été choisi avant, on renvoie une erreur
+        if (!$serviceId) {
+            throw $this->createNotFoundException('Aucun service sélectionné');
+        }
+
+        // On va chercher dans la base de données le service correspondant à l'id
+        $service = $serviceRepo->find($serviceId);
+
+        // On envoie ce service à la vue (Twig)
+        // => pour afficher son nom, prix, durée, etc.
+        return $this->render('booking/index.html.twig', [
+            'service' => $service,
+        ]);
+}
+
+
 }

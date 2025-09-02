@@ -3,7 +3,7 @@
 {% block title %}Hello BookingController!{% endblock %}
 
 {% block body %}
-{% for service in services %}
+
                 <tr>
                     <td>{{service.name}}</td>
                     <td>{{service.price}}€</td>
@@ -17,7 +17,5 @@
                         <a href="{{path('app_cart_product_remove',{'id':item.product.id})}}" class="text-decoration-none text-danger">Supprimer le produit</a>
                     </td> #}
                 </tr>
-                {% else %}
-                <p>Oups,votre panier est vide,achetez svp</p>
-            {% endfor %}
+                
 {% endblock %}
