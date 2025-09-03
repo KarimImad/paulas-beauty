@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: ScheduleRepository::class)]
 class Schedule
 {
@@ -17,19 +18,14 @@ class Schedule
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'schedules')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Service $service = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $date = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTime $startHour = null;
-
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTime $endHour = null;
-
-    #[ORM\Column]
-    private ?bool $isAvailable = null;
 
     /**
      * @var Collection<int, Order>
@@ -55,7 +51,6 @@ class Schedule
     public function setService(?Service $service): static
     {
         $this->service = $service;
-
         return $this;
     }
 
@@ -67,7 +62,6 @@ class Schedule
     public function setDate(\DateTime $date): static
     {
         $this->date = $date;
-
         return $this;
     }
 
@@ -79,37 +73,9 @@ class Schedule
     public function setStartHour(\DateTime $startHour): static
     {
         $this->startHour = $startHour;
-
         return $this;
     }
 
-    public function getEndHour(): ?\DateTime
-    {
-        return $this->endHour;
-    }
-
-    public function setEndHour(\DateTime $endHour): static
-    {
-        $this->endHour = $endHour;
-
-        return $this;
-    }
-
-    public function isAvailable(): ?bool
-    {
-        return $this->isAvailable;
-    }
-
-    public function setIsAvailable(bool $isAvailable): static
-    {
-        $this->isAvailable = $isAvailable;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Order>
-     */
     public function getOrders(): Collection
     {
         return $this->orders;
@@ -121,19 +87,16 @@ class Schedule
             $this->orders->add($order);
             $order->setSchedule($this);
         }
-
         return $this;
     }
 
     public function removeOrder(Order $order): static
     {
         if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
             if ($order->getSchedule() === $this) {
                 $order->setSchedule(null);
             }
         }
-
         return $this;
     }
 }

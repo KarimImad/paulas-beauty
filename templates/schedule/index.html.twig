@@ -20,10 +20,8 @@
         {% for schedule in schedules %}
             <tr>
                 <td>{{ schedule.id }}</td>
-                <td>{{ schedule.date ? schedule.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ schedule.date ? schedule.date|date('Y-m-d') : '' }}</td>
                 <td>{{ schedule.startHour ? schedule.startHour|date('H:i:s') : '' }}</td>
-                <td>{{ schedule.endHour ? schedule.endHour|date('H:i:s') : '' }}</td>
-                <td>{{ schedule.isAvailable ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('app_schedule_show', {'id': schedule.id}) }}">show</a>
                     <a href="{{ path('app_schedule_edit', {'id': schedule.id}) }}">edit</a>

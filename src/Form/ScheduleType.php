@@ -16,8 +16,6 @@ class ScheduleType extends AbstractType
         $builder
             ->add('date')
             ->add('startHour')
-            ->add('endHour')
-            ->add('isAvailable')
             ->add('service', EntityType::class, [
                 'class' => Service::class,
                 'choice_label' => 'name',

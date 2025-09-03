@@ -1,21 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BookingController!{% endblock %}
+{% block title %}Réserver - {{ service.name }}{% endblock %}
 
 {% block body %}
+<div class="max-w-6xl mx-auto px-6 py-10">
+    <!-- En-tête -->
+    <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-900">Réserver un créneau</h1>
+        <p class="mt-2 text-gray-600">
+            <span class="font-semibold">{{ service.name }}</span> · 
+            {{ service.price }} € 
+        </p>
+    </div>
 
-                <tr>
-                    <td>{{service.name}}</td>
-                    <td>{{service.price}}€</td>
-                    <td>
-                    {# <a href="{{path('app_cart_remove_product',{'id':item.product.id})}}" class="text-decoration-none text-danger">(-)</a>
-                    {{item.quantity}} 
-                    <a href="{{path('app_cart_new',{'id':item.product.id})}}" class="text-decoration-none text-success">(+)</a>
-                    </td>
-                    <td>{{item.product.price * item.quantity}}</td>
-                    <td>
-                        <a href="{{path('app_cart_product_remove',{'id':item.product.id})}}" class="text-decoration-none text-danger">Supprimer le produit</a>
-                    </td> #}
-                </tr>
-                
+    {% if schedules is empty %}
+        <div class="p-6 bg-yellow-100 text-yellow-800 rounded-xl text-center font-medium">
+            Aucun créneau disponible pour ce service.
+        </div>
+    {% else %}
+        <!-- Liste des jours avec créneaux -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% set grouped = {} %}
+            {% for schedule in schedules %}
+                {% set day = schedule.date|date('l d F Y') %}
+                {% set _ = grouped[day]|default([]) %}
+                {% set grouped = grouped|merge({ (day): grouped[day]|default([]) | merge([schedule]) }) %}
+            {% endfor %}
+
+            {% for day, slots in grouped %}
+                <div class="bg-white rounded-2xl shadow-md p-6 border hover:shadow-lg transition">
+                    <!-- Titre jour -->
+                    <h3 class="text-lg font-semibold text-gray-800 text-center border-b pb-2 mb-4">
+                        {{ day }}
+                    </h3>
+
+                    <!-- Liste créneaux -->
+                    <div class="flex flex-wrap gap-3 justify-center">
+                        {% for schedule in slots %}
+                                <a href="#"
+                                   class="px-4 py-2 bg-green-500 text-white rounded-full font-medium shadow-sm hover:bg-green-600 transition">
+                                    {{ schedule.startHour|date('H:i') }}
+                                </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
