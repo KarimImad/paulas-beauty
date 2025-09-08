@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choisir un créneau - {{ service.name }}{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gray-50 px-6 py-10">
+    <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-900">Réserver un créneau</h1>
+        <p class="mt-2 text-gray-600">
+            <span class="font-semibold">{{ service.name }}</span> · {{ service.price }} €
+        </p>
+    </div>
+
+    {% if schedules is empty %}
+        <div class="p-6 bg-yellow-100 text-yellow-800 rounded-xl text-center font-medium">
+            Aucun créneau disponible pour ce service.
+        </div>
+    {% else %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for schedule in schedules %}
+                <div class="bg-white rounded-2xl shadow-md p-6 border hover:shadow-lg transition text-center">
+                    <h3 class="text-lg font-semibold mb-4">{{ schedule.startHour|date('l j F Y') }}</h3>
+                    <a href="{{ path('app_confirmation', {scheduleId: schedule.id}) }}"
+                       class="px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition font-medium">
+                        {{ schedule.startHour|date('H:i') }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

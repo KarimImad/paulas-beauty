@@ -1,51 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réservation - {{ service.name }}{% endblock %}
+{% block title %}Réservation{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-gray-50 mx-auto px-6 py-10">
-    <!-- En-tête -->
-    <div class="mb-8 text-center">
-        <h1 class="text-3xl font-bold text-gray-900">Réserver un créneau</h1>
-        <p class="mt-2 text-gray-600">
-            <span class="font-semibold">{{ service.name }}</span> · 
-            {{ service.price }} €
-        </p>
-    </div>
+<div class="min-h-screen bg-gray-50 px-6 py-10">
+    <h1 class="text-3xl font-bold text-center mb-8">Choisis ton service</h1>
 
-    {% if schedules is empty %}
-        <div class="p-6 bg-yellow-100 text-yellow-800 rounded-xl text-center font-medium">
-            Aucun créneau disponible pour ce service.
-        </div>
-    {% else %}
-        <!-- Groupement des créneaux par jour -->
-        {% set grouped = {} %}
-        {% for schedule in schedules %}
-            {% set day = schedule.date|format_date(locale='fr', pattern='EEEE dd MMMM ') %}
-            {% set _ = grouped[day]|default([]) %}
-            {% set grouped = grouped|merge({ (day): grouped[day]|default([]) | merge([schedule]) }) %}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {% for service in services %}
+            <div class="bg-white rounded-2xl shadow-md p-6 border hover:shadow-lg transition">
+                <h2 class="text-xl font-semibold mb-2">{{ service.name }}</h2>
+                <p class="text-gray-600 mb-4">{{ service.price }} €</p>
+                <a href="{{ path('app_select_booking', {id: service.id}) }}"
+                   class="px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition font-medium">
+                    Réserver
+                </a>
+            </div>
         {% endfor %}
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {% for day, slots in grouped %}
-                <div class="bg-white rounded-2xl shadow-md p-6 border hover:shadow-lg transition">
-                    <!-- Titre jour -->
-                    <h3 class="text-lg font-semibold text-gray-800 text-center border-b pb-2 mb-4">
-                        {{ day|capitalize }}
-                    </h3>
-
-                    <!-- Liste créneaux -->
-                    <div class="flex flex-wrap gap-3 justify-center">
-                        {% for schedule in slots %}
-                            <a href="#"
-                               class="px-4 py-2 bg-green-500 text-white rounded-full font-medium shadow-sm hover:bg-green-600 transition">
-                                {{ schedule.startHour|date('H:i') }}
-                            </a>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    </div>
 </div>
 {% endblock %}

@@ -1,39 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Schedule index{% endblock %}
+{% block title %}Schedules{% endblock %}
 
 {% block body %}
-    <h1>Schedule index</h1>
+<div class="max-w-5xl mx-auto mt-10">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">📅 Schedule List</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>StartHour</th>
-                <th>EndHour</th>
-                <th>IsAvailable</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for schedule in schedules %}
-            <tr>
-                <td>{{ schedule.id }}</td>
-                <td>{{ schedule.date ? schedule.date|date('Y-m-d') : '' }}</td>
-                <td>{{ schedule.startHour ? schedule.startHour|date('H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_schedule_show', {'id': schedule.id}) }}">show</a>
-                    <a href="{{ path('app_schedule_edit', {'id': schedule.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="overflow-x-auto rounded-lg shadow">
+        <table class="w-full text-sm text-left text-gray-600">
+            <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
+                <tr>
+                    <th scope="col" class="px-4 py-3">ID</th>
+                    <th scope="col" class="px-4 py-3">Date</th>
+                    <th scope="col" class="px-4 py-3">Start Hour</th>
+                    <th scope="col" class="px-4 py-3">End Hour</th>
+                    <th scope="col" class="px-4 py-3">Available</th>
+                    <th scope="col" class="px-4 py-3 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for schedule in schedules %}
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-4 py-3 font-medium text-gray-900">{{ schedule.id }}</td>
+                        <td class="px-4 py-3">{{ schedule.startHour|date('d/m/Y') }}</td>
+                        <td class="px-4 py-3">{{ schedule.startHour ? schedule.startHour|date('H:i') : '-' }}</td>
+                        <td class="px-4 py-3">--:--</td> {# Placeholder si pas encore de endHour #}
+                        <td class="px-4 py-3">
+                            {% if not schedule.isBooked %}
+                                <span class="px-2 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full">Yes</span>
+                            {% else %}
+                                <span class="px-2 py-1 text-xs font-semibold text-red-700 bg-red-100 rounded-full">No</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-3 flex justify-center gap-2">
+                            <a href="{{ path('app_schedule_show', {'id': schedule.id}) }}"
+                               class="px-3 py-1 text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition">
+                                Voir
+                            </a>
+                            <a href="{{ path('app_schedule_edit', {'id': schedule.id}) }}"
+                               class="px-3 py-1 text-xs font-medium text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg transition">
+                                Modifier
+                            </a>
+                            <a href="{{ path('app_schedule_delete', {'id': schedule.id}) }}"
+                               class="px-3 py-1 text-xs font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition">
+                               Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="px-4 py-6 text-center text-gray-500">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <a href="{{ path('app_schedule_new') }}">Create new</a>
+    <div class="mt-6">
+        <a href="{{ path('app_schedule_new') }}"
+           class="inline-block px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition">
+            ➕ Create new
+        </a>
+    </div>
+</div>
 {% endblock %}

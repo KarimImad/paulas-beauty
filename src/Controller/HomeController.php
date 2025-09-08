@@ -14,16 +14,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class HomeController extends AbstractController
 {
     #[Route('/home', name: 'app_home')]
-    public function index(ServiceRepository $serviceRepository, ReviewRepository $reviewRepository, CategoryRepository $categoryRepository ): Response
+    public function index(ServiceRepository $serviceRepository, ReviewRepository $reviewRepository ): Response
     {
         $services = $serviceRepository->findAll();
         $reviews = $reviewRepository->findAll();
-        $categories = $categoryRepository->findAll();
 
         return $this->render('home/index.html.twig', [
             'services' => $services,
             'reviews' => $reviews,
-            'categories' => $categories,
         ]);
     }
 }

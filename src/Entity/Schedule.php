@@ -2,12 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\ScheduleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Repository\ScheduleRepository;
 
 #[ORM\Entity(repositoryClass: ScheduleRepository::class)]
 class Schedule
@@ -17,20 +15,17 @@ class Schedule
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'schedules')]
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $startHour = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isBooked = false;
+
+    #[ORM\ManyToOne(targetEntity: Service::class, inversedBy: 'schedules')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Service $service = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $date = null;
-
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTime $startHour = null;
-
-    /**
-     * @var Collection<int, Order>
-     */
-    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'schedule')]
+    #[ORM\OneToMany(mappedBy: 'schedule', targetEntity: Order::class, orphanRemoval: true)]
     private Collection $orders;
 
     public function __construct()
@@ -38,59 +33,32 @@ class Schedule
         $this->orders = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    public function getId(): ?int { return $this->id; }
 
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
+    public function getStartHour(): ?\DateTimeImmutable { return $this->startHour; }
+    public function setStartHour(\DateTimeImmutable $startHour): self { $this->startHour = $startHour; return $this; }
 
-    public function setService(?Service $service): static
-    {
-        $this->service = $service;
-        return $this;
-    }
+    public function getIsBooked(): bool { return $this->isBooked; }
+    public function setIsBooked(bool $isBooked): self { $this->isBooked = $isBooked; return $this; }
 
-    public function getDate(): ?\DateTime
-    {
-        return $this->date;
-    }
+    public function getService(): ?Service { return $this->service; }
+    public function setService(?Service $service): self { $this->service = $service; return $this; }
 
-    public function setDate(\DateTime $date): static
-    {
-        $this->date = $date;
-        return $this;
-    }
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection { return $this->orders; }
 
-    public function getStartHour(): ?\DateTime
-    {
-        return $this->startHour;
-    }
-
-    public function setStartHour(\DateTime $startHour): static
-    {
-        $this->startHour = $startHour;
-        return $this;
-    }
-
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Order $order): static
+    public function addOrder(Order $order): self
     {
         if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
+            $this->orders[] = $order;
             $order->setSchedule($this);
         }
         return $this;
     }
 
-    public function removeOrder(Order $order): static
+    public function removeOrder(Order $order): self
     {
         if ($this->orders->removeElement($order)) {
             if ($order->getSchedule() === $this) {

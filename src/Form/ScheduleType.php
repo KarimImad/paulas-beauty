@@ -4,23 +4,31 @@ namespace App\Form;
 
 use App\Entity\Schedule;
 use App\Entity\Service;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ScheduleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date')
-            ->add('startHour')
+            ->add('startHour', DateTimeType::class, [
+                'label' => 'Heure du créneau',
+                'widget' => 'single_text',
+            ])
+            ->add('isBooked', CheckboxType::class, [
+                'label' => 'Réservé',
+                'required' => false,
+            ])
             ->add('service', EntityType::class, [
                 'class' => Service::class,
                 'choice_label' => 'name',
-            ])
-        ;
+                'label' => 'Service associé',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation de réservation{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Réservation confirmée ! ✅</h1>
+
+        <p>Merci {{ order.firstName }} {{ order.lastName }} pour votre réservation.</p>
+
+        <h3>Détails de la réservation :</h3>
+        <ul>
+            <li><strong>Service :</strong> {{ order.service.name }}</li>
+            <li><strong>Créneau :</strong> {{ order.scheduleAt|date('d/m/Y H:i') }}</li>
+            <li><strong>Email :</strong> {{ order.email }}</li>
+            <li><strong>Téléphone :</strong> {{ order.phone }}</li>
+        </ul>
+
+        <p>Nous vous contacterons si nécessaire. 😊</p>
+
+        <a href="{{ path('app_booking') }}" class="btn btn-primary mt-3">Retour à la page des services</a>
+    </div>
+{% endblock %}
