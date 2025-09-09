@@ -19,7 +19,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {% for schedule in schedules %}
                 <div class="bg-white rounded-2xl shadow-md p-6 border hover:shadow-lg transition text-center">
-                    <h3 class="text-lg font-semibold mb-4">{{ schedule.startHour|date('l j F Y') }}</h3>
+                    <h3 class="text-lg font-semibold mb-4">{{ schedule.startHour|format_datetime(locale='fr', pattern='EEEE d MMMM yyyy')|capitalize }}</h3>
                     <a href="{{ path('app_confirmation', {scheduleId: schedule.id}) }}"
                        class="px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition font-medium">
                         {{ schedule.startHour|date('H:i') }}

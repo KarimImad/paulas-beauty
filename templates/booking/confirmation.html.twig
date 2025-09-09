@@ -8,7 +8,8 @@
         <h1 class="text-2xl font-bold mb-4">Confirme ta réservation</h1>
         <p class="mb-6 text-gray-600">
             Service : <span class="font-semibold">{{ service.name }}</span><br>
-            Créneau : <span class="font-semibold">{{ schedule.startHour|date('H:i') }} le {{ schedule.startHour|date('d/m/Y') }}</span>
+            Créneau : <span class="font-semibold">{{ schedule.startHour|date('H:i') }} le {{ schedule.startHour|format_datetime(locale='fr', pattern='EEEE d MMMM yyyy')|capitalize }}
+</span>
         </p>
 
         <form method="POST">

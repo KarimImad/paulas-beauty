@@ -20,10 +20,10 @@ class ScheduleType extends AbstractType
                 'label' => 'Heure du créneau',
                 'widget' => 'single_text',
             ])
-            ->add('isBooked', CheckboxType::class, [
-                'label' => 'Réservé',
-                'required' => false,
-            ])
+            // ->add('isBooked', CheckboxType::class, [
+            //     'label' => 'Réservé',
+            //     'required' => false,
+            // ])
             ->add('service', EntityType::class, [
                 'class' => Service::class,
                 'choice_label' => 'name',

@@ -9,3 +9,4 @@ return function (array $context) {
 };
 
 setlocale(LC_TIME, 'fr_FR.UTF-8'); 
+\Locale::setDefault('fr_FR');

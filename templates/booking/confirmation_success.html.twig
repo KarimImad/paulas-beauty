@@ -3,21 +3,46 @@
 {% block title %}Confirmation de réservation{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1>Réservation confirmée ! ✅</h1>
+    <div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div class="bg-white shadow-lg rounded-2xl p-8 max-w-lg w-full text-center">
+            
+            <!-- Icône ✅ -->
+            <div class="flex justify-center mb-4">
+                <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+                    <span class="text-3xl">✅</span>
+                </div>
+            </div>
 
-        <p>Merci {{ order.firstName }} {{ order.lastName }} pour votre réservation.</p>
+            <!-- Titre -->
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">
+                Réservation confirmée !
+            </h1>
 
-        <h3>Détails de la réservation :</h3>
-        <ul>
-            <li><strong>Service :</strong> {{ order.service.name }}</li>
-            <li><strong>Créneau :</strong> {{ order.scheduleAt|date('d/m/Y H:i') }}</li>
-            <li><strong>Email :</strong> {{ order.email }}</li>
-            <li><strong>Téléphone :</strong> {{ order.phone }}</li>
-        </ul>
+            <p class="text-gray-600 mb-6">
+                Merci <span class="font-semibold">{{ order.firstName }} {{ order.lastName }}</span> pour votre réservation.
+            </p>
 
-        <p>Nous vous contacterons si nécessaire. 😊</p>
+            <!-- Détails -->
+            <div class="text-left bg-gray-50 border rounded-xl p-5 shadow-sm mb-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">Détails de la réservation :</h3>
+                <ul class="space-y-2 text-gray-600">
+                    <li><strong>Service :</strong> {{ order.service.name }}</li>
+                    <li><strong>Créneau :</strong> {{ order.scheduleAt|date('d/m/Y H:i') }}</li>
+                    <li><strong>Email :</strong> {{ order.email }}</li>
+                    <li><strong>Téléphone :</strong> {{ order.phone }}</li>
+                </ul>
+            </div>
 
-        <a href="{{ path('app_booking') }}" class="btn btn-primary mt-3">Retour à la page des services</a>
+            <!-- Message -->
+            <p class="text-gray-500 mb-6">
+                Nous vous contacterons si nécessaire. 😊
+            </p>
+
+            <!-- Bouton retour -->
+            <a href="{{ path('app_home') }}"
+               class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-xl shadow-md transition">
+                Retour à la page des services
+            </a>
+        </div>
     </div>
 {% endblock %}
